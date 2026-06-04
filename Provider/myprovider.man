@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<instrumentationManifest
+    xmlns="http://schemas.microsoft.com/win/2004/08/events"
+    xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events">
+
+  <instrumentation>
+
+    <events>
+
+      <!-- Provider -->
+      <provider
+        name="MyCustomETWProvider"
+        guid="{6A282996-820B-42F3-8725-573FD309CD0A}"
+        symbol="MY_ETW_PROVIDER"
+        resourceFileName="%SystemRoot%\System32\MyProvider.dll"
+        messageFileName="%SystemRoot%\System32\MyProvider.dll">
+
+        <!-- Channel -->
+        <channels>
+          <channel
+            name="MyCustomETWProvider/Operational"
+            type="Operational"
+            enabled="true"/>
+        </channels>
+
+        <!-- Events -->
+        <events>
+
+          <!-- Evento principal -->
+          <event
+            value="1337"
+            level="win:Informational"
+            channel="MyCustomETWProvider/Operational"
+            symbol="ProcessMessage"
+            template="PidStringTemplate"
+            message="$(string.Event1337)"/>
+
+        </events>
+
+        <!-- Templates -->
+        <templates>
+
+          <!-- PID + String -->
+          <template tid="PidStringTemplate">
+
+            <data name="PID" inType="win:UInt32"/>
+            <data name="Message" inType="win:UnicodeString"/>
+
+          </template>
+
+        </templates>
+
+      </provider>
+
+    </events>
+  </instrumentation>
+
+  <!-- Mensajes -->
+  <localization>
+
+    <resources culture="en-US">
+
+      <stringTable>
+
+        <string
+          id="Event1337"
+          value="Process report: PID=%1 Message=%2"/>
+
+      </stringTable>
+
+    </resources>
+
+  </localization>
+
+</instrumentationManifest>
